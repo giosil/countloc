@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<project name="string-utils" default="complete" basedir=".">
+  <property name="doc.packages" value="org.dew.sutil" />
+  <property name="src.dir"      value="src/main" />
+  <property name="test.dir"     value="src/test" />
+  <property name="ext.dir"      value="${user.home}/.m2/repository" />
+  <property name="dst.dir"      value="target" />
+  <property name="doc.dir"      value="doc" />
+  <property name="javadoc.dir"  value="doc/javadoc" />
+  <property name="out.dir"      value="out" />
+
+  <target name="complete" depends="compilation, documentation, assembly, compilation_test, test" />
+  <target name="normal"   depends="compilation" />
+  <target name="docs"     depends="documentation" />
+  
+  <target name="clean">
+    <delete dir="${out.dir}" includeEmptyDirs="true" />
+    <delete dir="${doc.dir}" includeEmptyDirs="true" />
+    <delete dir="${dst.dir}" includeEmptyDirs="true" />
+  </target>
+
+  <target name="compilation">
+    <echo>ant java version: ${ant.java.version}</echo>
+    <echo>jvm java version: ${java.version}</echo>
+    <delete dir="${out.dir}" includeEmptyDirs="true" />
+    <mkdir  dir="${out.dir}" />
+    <javac debug="true" debuglevel="lines,vars,source" srcdir="${src.dir}/java" destdir="${out.dir}" includeantruntime="false">
+    </javac>
+  </target>
+
+  <target name="assembly">
+    <jar jarfile="${dst.dir}/${ant.project.name}.jar">
+      <fileset dir="${out.dir}" includes="**/*.class" />
+    </jar>
+  </target>
+
+  <target name="documentation">
+    <delete dir="${javadoc.dir}" includeEmptyDirs="true" />
+    <mkdir  dir="${javadoc.dir}" />
+    <javadoc sourcepath="${src.dir}/java" destdir="${javadoc.dir}" packagenames="${doc.packages}" />
+    <jar jarfile="${dst.dir}/${ant.project.name}_javadoc.jar" basedir="${javadoc.dir}" />
+  </target>
+
+  <target name="compilation_test">
+    <delete dir="${out.dir}" includeEmptyDirs="true" />
+    <mkdir  dir="${out.dir}" />
+    <javac debug="true" debuglevel="lines,vars,source" srcdir="${test.dir}/java" destdir="${out.dir}" includeantruntime="false">
+      <classpath path="${ext.dir}/junit/junit/3.8.1/junit-3.8.1.jar" />
+      <classpath path="${ext.dir}/javax/javaee-api/7.0/javaee-api-7.0.jar" />
+      <classpath path="${dst.dir}/${ant.project.name}.jar" />
+    </javac>
+  </target>
+
+  <target name="test" depends="compilation_test">
+    <junit>
+      <classpath>
+        <pathelement location="${ext.dir}/junit/junit/3.8.1/junit-3.8.1.jar" />
+        <pathelement location="${ext.dir}/javax/javaee-api/7.0/javaee-api-7.0.jar" />
+        <pathelement location="${dst.dir}/${ant.project.name}.jar" />
+        <pathelement location="${out.dir}" />
+      </classpath>
+      <batchtest>
+        <fileset dir="${out.dir}">
+          <include name="**/*Test*" />
+        </fileset>
+      </batchtest>
+      <formatter type="plain" usefile="false" />
+    </junit>
+  </target>
+</project>
