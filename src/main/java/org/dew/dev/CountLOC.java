@@ -11,6 +11,30 @@ class CountLOC
   
   public static int SX = 130;
   public static int DX = 10;
+  
+  public static boolean EXCLUDE_EMPTY_ROW = false;
+  public static boolean EXCLUDE_COMMENTS  = false;
+  
+  public static String[] SOURCES = {
+      "java",
+      "cs",
+      "c",
+      "cpp",
+      "py",
+      "bas",
+      "vb",
+      "xml",
+      "html",
+      "htm",
+      "js",
+      "css",
+      "ts",
+      "cmd",
+      "bat",
+      "sh",
+      "sql",
+      "md"
+  };
 
   public static 
   void main(String[] args) 
@@ -143,11 +167,27 @@ class CountLOC
         }
         
         if(extension != null && extension.length() > 0) {
-          if(fileName.endsWith("." + extension)) {
+          if(extension.equals("*")) {
+            totalLOC += countLOCFile(file);
+          }
+          else if(fileName.endsWith("." + extension)) {
             totalLOC += countLOCFile(file);
           }
         }
         else {
+          int sep = fileName.lastIndexOf('.');
+          if(sep < 0 || sep == fileName.length() - 1) continue;
+          
+          String fileExtension = fileName.substring(sep + 1).toLowerCase();
+          boolean found = false;
+          for(int x = 0; x < SOURCES.length; x++) {
+            if(SOURCES[x].equals(fileExtension)) {
+              found = true;
+              break;
+            }
+          }
+          if(!found) continue;
+          
           totalLOC += countLOCFile(file);
         }
       }
@@ -169,28 +209,19 @@ class CountLOC
     try {
       br = new BufferedReader(new FileReader(file));
       while((line = br.readLine()) != null) {
-        line = line.trim();
         
-        if(line.length() == 0)              continue;
-        if(line.startsWith("//"))           continue;
-        if(line.startsWith("/*"))           continue;
-        if(line.startsWith("*"))            continue;
-        if(line.equals(";"))                continue;
-        
-//        if(line.equals("{"))                continue;
-//        if(line.equals("}"))                continue;
-//        if(line.startsWith("package "))     continue;
-//        if(line.startsWith("import "))      continue;
-//        if(line.equals("class"))            continue;
-//        if(line.equals("interface"))        continue;
-//        if(line.equals("enum"))             continue;
-//        if(line.equals("implements"))       continue;
-//        if(line.equals("public"))           continue;
-//        if(line.equals("private"))          continue;
-//        if(line.equals("protected"))        continue;
-//        if(line.equals("public static"))    continue;
-//        if(line.equals("private static"))   continue;
-//        if(line.equals("protected static")) continue;
+        if(EXCLUDE_EMPTY_ROW || EXCLUDE_COMMENTS) {
+          line = line.trim();
+          
+          if(EXCLUDE_EMPTY_ROW) {
+            if(line.length() == 0)              continue;
+          }
+          if(EXCLUDE_COMMENTS) {
+            if(line.startsWith("//"))           continue;
+            if(line.startsWith("/*"))           continue;
+            if(line.startsWith("*"))            continue;
+          }
+        }
         
         result++;
       }
