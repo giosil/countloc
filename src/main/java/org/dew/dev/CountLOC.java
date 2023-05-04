@@ -33,7 +33,15 @@ class CountLOC
       "bat",
       "sh",
       "sql",
-      "md"
+      "md",
+      "cfg",
+      "conf",
+      "ini",
+      "properties",
+      "json",
+      "yaml",
+      "yml",
+      "jrxml",
   };
 
   public static 
