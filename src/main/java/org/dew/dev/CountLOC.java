@@ -214,12 +214,12 @@ class CountLOC
           line = line.trim();
           
           if(EXCLUDE_EMPTY_ROW) {
-            if(line.length() == 0)              continue;
+            if(line.length() == 0)    continue;
           }
           if(EXCLUDE_COMMENTS) {
-            if(line.startsWith("//"))           continue;
-            if(line.startsWith("/*"))           continue;
-            if(line.startsWith("*"))            continue;
+            if(line.startsWith("//")) continue;
+            if(line.startsWith("/*")) continue;
+            if(line.startsWith("*"))  continue;
           }
         }
         
