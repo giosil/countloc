@@ -9,7 +9,7 @@ class CountLOC
 {
   public static int totalLOC = 0;
   
-  public static int SX = 130;
+  public static int SX = 90;
   public static int DX = 10;
   
   public static boolean EXCLUDE_EMPTY_ROW = false;
@@ -22,12 +22,12 @@ class CountLOC
       "cmd","bat","ps1","sh","sql",
       "md","cfg","conf","ini","properties","jrxml"
   };
-
+  
   public static 
   void main(String[] args) 
   {
     if(args == null || args.length == 0) {
-      System.out.println("Usage: CountLOC file_or_folder [extension] [include] [exclude] [maxlength]");
+      System.out.println("Usage: CountLOC file_or_folder [extension] [include] [exclude] [lengthColFile]");
       System.exit(1);
     }
     
@@ -40,11 +40,12 @@ class CountLOC
     String extension = args != null && args.length > 1 ? args[1] : null;
     String patternIn = args != null && args.length > 2 ? args[2] : null;
     String patternEx = args != null && args.length > 3 ? args[3] : null;
-    String maxlength = args != null && args.length > 4 ? args[4] : null;
-    if(maxlength != null && maxlength.length() > 0) {
+    String lengthCol = args != null && args.length > 4 ? args[4] : null;
+    if(lengthCol != null && lengthCol.length() > 0) {
       try {
-        int iMaxLength = Integer.parseInt(maxlength);
-        if(iMaxLength < 10) iMaxLength = 10;
+        int l = Integer.parseInt(lengthCol);
+        if(l < 20) l = 20;
+        SX = l;
       }
       catch(Exception ex) {
       }
