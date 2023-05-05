@@ -19,7 +19,7 @@ public class TestCountLOC extends TestCase {
   }
   
   public void testApp() throws Exception {
-    CountLOC.start(new File("."), "", null);
+    CountLOC.start(new File("."), "", null, "target");
   }
   
 }

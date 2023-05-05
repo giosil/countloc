@@ -26,6 +26,9 @@ class CountLOC
       "xml",
       "html",
       "htm",
+      "jsp",
+      "asp",
+      "aspx",
       "js",
       "css",
       "ts",
@@ -112,7 +115,18 @@ class CountLOC
   boolean countLOC(File fileOrFolder, String extension, String patternIn, String patternEx)
   {
     try {
-      if(fileOrFolder == null) return false;
+      if(fileOrFolder == null) {
+        return false;
+      }
+      String name = fileOrFolder.getName();
+      if(name.length() > 1) {
+        char c0 = name.charAt(0);
+        char c1 = name.charAt(1);
+        if(c0 == '.' && c1 != '/' && c1 != '\\') {
+          // Hidden folders
+          return false;
+        }
+      }
       if(!fileOrFolder.exists()) {
         System.out.println(fileOrFolder.getAbsolutePath() + " NOT found");
         return false;
@@ -139,6 +153,14 @@ class CountLOC
         String fileName = file.getName();
         String filePath = file.getAbsolutePath();
         
+        if(fileName.length() > 1) {
+          char c0 = fileName.charAt(0);
+          char c1 = fileName.charAt(1);
+          if(c0 == '.' && c1 != '/' && c1 != '\\') {
+            // Hidden files
+            continue;
+          }
+        }
         if(patternIn != null && patternIn.length() > 0) {
           if(patternIn.startsWith("_")) {
             if(!filePath.endsWith(patternIn.substring(1))) {
@@ -217,7 +239,6 @@ class CountLOC
     try {
       br = new BufferedReader(new FileReader(file));
       while((line = br.readLine()) != null) {
-        
         if(EXCLUDE_EMPTY_ROW || EXCLUDE_COMMENTS) {
           line = line.trim();
           
@@ -230,12 +251,11 @@ class CountLOC
             if(line.startsWith("*"))  continue;
           }
         }
-        
         result++;
       }
     }
     catch(Exception ex) {
-      ex.printStackTrace();
+      System.err.println("Exception during read " + file.getAbsolutePath() + ": " + ex);
       return result;
     }
     finally {
