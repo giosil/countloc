@@ -10,7 +10,7 @@ class CountLOC
   public static int totalLOC = 0;
   
   public static int SX = 90;
-  public static int DX = 10;
+  public static int DX = 9;
   
   public static boolean EXCLUDE_EMPTY_ROW = false;
   public static boolean EXCLUDE_COMMENTS  = false;
@@ -18,7 +18,7 @@ class CountLOC
   public static String[] SOURCES = {
       "java","cs","c","h","cpp","pas","py","bas","vb","inc",
       "txt","xml","json","yaml","yml",
-      "html","htm","jsp","tld","asp","aspx","js","css","ts",
+      "html","htm","jsp","tld","asp","aspx","js","css","ts","php","module",
       "cmd","bat","ps1","sh","sql",
       "md","cfg","conf","ini","properties","jrxml"
   };
