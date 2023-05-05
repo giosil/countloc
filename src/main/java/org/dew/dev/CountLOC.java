@@ -16,35 +16,11 @@ class CountLOC
   public static boolean EXCLUDE_COMMENTS  = false;
   
   public static String[] SOURCES = {
-      "java",
-      "cs",
-      "c",
-      "cpp",
-      "py",
-      "bas",
-      "vb",
-      "xml",
-      "html",
-      "htm",
-      "jsp",
-      "asp",
-      "aspx",
-      "js",
-      "css",
-      "ts",
-      "cmd",
-      "bat",
-      "sh",
-      "sql",
-      "md",
-      "cfg",
-      "conf",
-      "ini",
-      "properties",
-      "json",
-      "yaml",
-      "yml",
-      "jrxml",
+      "java","cs","c","h","cpp","pas","py","bas","vb","inc",
+      "txt","xml","json","yaml","yml",
+      "html","htm","jsp","tld","asp","aspx","js","css","ts",
+      "cmd","bat","ps1","sh","sql",
+      "md","cfg","conf","ini","properties","jrxml"
   };
 
   public static 
